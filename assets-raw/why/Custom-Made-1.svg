@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 99.213 99.213">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+        stroke: #a69f88;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.984px;
+      }
+
+      .st1 {
+        fill: #a69f88;
+      }
+    </style>
+  </defs>
+  <path class="st1" d="M89.862,1.984c4.062,0,7.366,3.304,7.366,7.366v80.512c0,4.062-3.304,7.366-7.366,7.366H9.35c-4.062,0-7.366-3.304-7.366-7.366V9.35C1.984,5.289,5.289,1.984,9.35,1.984h80.512M89.862,0H9.35C4.208,0,0,4.208,0,9.35v80.512C0,95.005,4.208,99.213,9.35,99.213h80.512c5.143,0,9.35-4.208,9.35-9.35V9.35C99.213,4.208,95.005,0,89.862,0h0Z"/>
+  <polygon class="st0" points="25.509 78.473 42.637 61.345 69.079 61.345 69.079 78.473 25.509 78.473"/>
+  <polygon class="st0" points="42.637 61.345 25.509 78.473 25.509 20.38 42.637 20.38 42.637 61.345"/>
+  <line class="st0" x1="25.509" y1="63.95" x2="30.939" y2="63.95"/>
+  <line class="st0" x1="25.509" y1="56.688" x2="30.939" y2="56.688"/>
+  <line class="st0" x1="25.509" y1="49.427" x2="30.939" y2="49.427"/>
+  <line class="st0" x1="25.509" y1="42.165" x2="30.939" y2="42.165"/>
+  <line class="st0" x1="25.509" y1="34.903" x2="30.939" y2="34.903"/>
+  <line class="st0" x1="25.509" y1="27.642" x2="30.939" y2="27.642"/>
+  <line class="st0" x1="69.079" y1="73.043" x2="69.079" y2="78.473"/>
+  <line class="st0" x1="25.509" y1="73.043" x2="25.509" y2="78.473"/>
+  <g>
+    <rect class="st0" x="47.104" y="36.456" width="33.993" height="6.289" transform="translate(-9.227 56.925) rotate(-45)"/>
+    <polygon class="st0" points="54.306 53.842 49.859 49.395 45.292 58.409 54.306 53.842"/>
+    <rect class="st0" x="73.057" y="25.705" width="3.587" height="6.289" transform="translate(1.523 61.377) rotate(-45)"/>
+  </g>
+  <metadata>
+    <sfw xmlns="http://ns.adobe.com/SaveForWeb/1.0/">
+      <slices/>
+      <sliceSourceBounds x="92.12" y="92.12" width="99.21" height="99.21" bottomLeftOrigin="true"/>
+    </sfw>
+  </metadata>
+</svg>

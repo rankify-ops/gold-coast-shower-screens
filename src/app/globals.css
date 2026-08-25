@@ -1,0 +1,1104 @@
+@import "tailwindcss";
+
+/*
+ * Gold Coast Shower Screens
+ * ─────────────────────────
+ * Light body, dark hero. Navy and grey, taken from their logo.
+ *
+ * The rules this system enforces:
+ *
+ *   1. One typeface doing every job. Display and micro-type are the same
+ *      family at different sizes — the technical register comes from
+ *      SMALL + UPPERCASE + TIGHT TRACKING, not from bolting on a monospace.
+ *   2. Hard slab cuts between sections. No gradients, no crossfades. Each
+ *      section is a solid ground the next one butts against.
+ *   3. Grain over everything. Flat fields band badly on cheap panels and read
+ *      as an unstyled div; grain reads as print.
+ *   4. Real data as ornament — lead time, licence number, live clock. The
+ *      cheapest possible way to look like a company that measures things.
+ *
+ * TWO PALETTES
+ * The hero keeps the dark treatment — a graded photograph needs a dark
+ * surround to hold its blacks. Everything below it runs light. The dark tokens
+ * (--black, --w-*, --rule) are therefore scoped to the hero and the footer;
+ * the light tokens (--paper, --mist, --navy, --ink-*) carry the rest.
+ */
+
+:root {
+  /* ── Dark set: hero, and the two navy slabs ── */
+  --black: #0a0a0b;
+  --char: #131315;
+  --w-90: rgba(255, 255, 255, 0.9);
+  --w-55: rgba(255, 255, 255, 0.55);
+  --w-32: rgba(255, 255, 255, 0.32);
+  --rule: rgba(255, 255, 255, 0.13);
+
+  /* ── The brand palette, as supplied. Every colour on every page resolves
+     through these; nothing is eyeballed and nothing is written twice. ──
+
+       navy   #00263d   the dark. Their logo navy.
+       beige  #a59f89   the accent, and the only warm colour.
+       grey   #d2d1cf   the mid ground the site sits on.
+
+     Whites and lighter greys sit above --grey; black and navy below it. */
+  --brass: #a59f89;
+  /* The light blue out of their logo mark. Used for the section labels, which
+     were navy at 55% and read as switched-off rather than as a quiet tier. */
+  --sky: #36b4e6;
+  /* Review stars. Google's own star gold, because these are Google reviews and
+     that colour is what people already read as a rating. */
+  --gold: #f4b400;
+
+  /* ── Ink tiers for /hero-glass-pop ────────────────────────────────────
+     THREE SOLID COLOURS, NOT ONE COLOUR AT THREE OPACITIES.
+
+     Measured against rankify.com.au, which reads far punchier from the same
+     ingredients: 30% of the type on /hero-glass is navy at 40-70% alpha,
+     while Rankify's dominant style is rgb(10,10,10) at full opacity and its
+     quiet tier is a SOLID #999 used sparingly. Alpha-fading ink is what makes
+     type look switched off rather than secondary — a solid grey reads as a
+     deliberate second voice, 45% navy reads as a mistake.
+
+     --ink   primary, 13.5:1 on the light grounds
+     --ink-2 body and secondary, 6.4:1
+     --ink-3 quiet labels only, 4.6:1
+     --rule  hairlines, solid rather than navy/12 */
+  --ink: #00263d;
+  --ink-2: #4e5f6b;
+  --ink-3: #7b8891;
+  --rule: #dcdcda;
+
+  /* ── Light set: everything below the hero ── */
+  --paper: #ffffff;
+  /* Mid grey — the supplied ground colour. */
+  --grey: #d2d1cf;
+  /* The alternating slab. Cool rather than warm, so it sits under navy
+     without going beige. */
+  --mist: #eef0f1;
+
+  /* Straight off their logo. */
+  --navy: #00263d;
+  --navy-deep: #001a2b;
+  /* One step up from --navy, for anything that has to read as navy *on* a
+     navy ground. */
+  --navy-lift: #0a3b58;
+
+  /* Ink is navy, not black — black type on a navy-accented page reads as a
+     second, competing dark. */
+  --ink: var(--navy);
+  --ink-60: rgba(0, 38, 62, 0.6);
+  --ink-38: rgba(0, 38, 62, 0.38);
+  --rule-dark: rgba(0, 38, 62, 0.14);
+
+  /* Display sits at 600 with heavy negative tracking — that combination only
+     works UPPERCASE and above roughly 48px. Below that the letters collide. */
+  --track-display: -0.045em;
+  --track-micro: -0.01em;
+}
+
+@theme inline {
+  --color-black: var(--black);
+  --color-brass: var(--brass);
+  --color-char: var(--char);
+  --color-paper: var(--paper);
+  --color-mist: var(--mist);
+  --color-grey: var(--grey);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-navy-lift: var(--navy-lift);
+  --color-ink: var(--ink);
+  --color-rule: var(--rule);
+  --color-rule-dark: var(--rule-dark);
+  --font-sans: var(--font-geist);
+
+  /*
+   * One curve for the whole site.
+   *
+   * Tailwind's default easing is cubic-bezier(0.4, 0, 0.2, 1) — a symmetric
+   * ease that reads as "computer moved a thing". Twenty transitions were
+   * already overriding it with the expo-out curve below, and twenty-six were
+   * not, so half the page eased one way and half the other. Setting the
+   * default here means every transition matches without each one restating it,
+   * and the explicit overrides become redundant rather than wrong.
+   *
+   * Expo-out: leaves fast, settles slowly. It is what makes motion read as
+   * weighted rather than linear.
+   */
+  --default-transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  --default-transition-duration: 300ms;
+}
+
+html {
+  overflow-x: hidden;
+  background: var(--paper);
+}
+
+html.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.smooth-scroll {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist), Geist, system-ui, sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--navy);
+  color: #fff;
+}
+
+/*
+ * DARK SCOPE
+ * ──────────
+ * The hero and the navy slabs re-point the shared tokens at their light-on-
+ * dark values, so every component below can use one set of variable names and
+ * still be correct on either ground. Without this each section would need its
+ * own colour props threaded through, which is how a two-palette page usually
+ * ends up inconsistent.
+ */
+.on-dark,
+.hero-scope {
+  --ink: #ffffff;
+  --ink-60: var(--w-55);
+  --ink-38: var(--w-32);
+  --rule-dark: var(--rule);
+
+  /* The hero's four washes, as alphas over black. On the dark grades they do
+     the heavy lifting: the frame has to drop far enough for white type to sit
+     on it, and most of that darkness is concentrated behind the card.
+       flat  — overall
+       edge  — top and bottom, seating the header and status rail
+       pool  — the soft ellipse feathering the card into the photograph
+       panel — the card's own tint, on top of flat */
+  --wash-flat: 0.2;
+  --wash-edge-top: 0.65;
+  --wash-edge-bot: 0.75;
+  --wash-pool: 0.42;
+  --wash-panel: 0.25;
+  color: #fff;
+}
+
+/*
+ * Softer washes, for a dark hero that still wants its photograph seen.
+ *
+ * .hero-scope's alphas were tuned against the two heaviest grades, where the
+ * frame is already crushed and the washes only have to finish the job. Over a
+ * grade that stops at 0.62 brightness they compound into black — flat, edges
+ * and pool all landing on the same pixels. These pull each one back far enough
+ * that the tiles and the brass tapware survive, while white type still sits.
+ *
+ * Applied alongside .hero-scope, not instead of it: the ramp and the beige
+ * buttons are unchanged, only the washes move.
+ */
+.wash-soft {
+  --wash-flat: 0.12;
+  --wash-edge-top: 0.5;
+  --wash-edge-bot: 0.58;
+  --wash-pool: 0.3;
+}
+
+/*
+ * The light hero (/natural).
+ *
+ * Same markup, opposite ground: the photograph runs at its own brightness, so
+ * every wash has to lift rather than darken and the type has to be navy. Both
+ * are handled by re-pointing the tokens the hero already reads, which is why
+ * Hero, Header and StatusRail need no light-specific markup beyond swapping
+ * this class in — the white-alpha ramp becomes a navy-alpha ramp of the same
+ * shape, and the --wash-* alphas drop to a tenth of the frame.
+ *
+ * --brass is deliberately NOT redefined. The beige buttons carry over exactly
+ * as they are on the dark grades.
+ */
+.hero-light {
+  --w-90: rgba(0, 38, 62, 0.92);
+  --w-55: rgba(0, 38, 62, 0.62);
+  --w-32: rgba(0, 38, 62, 0.42);
+  --rule: rgba(0, 38, 62, 0.16);
+  --ink: var(--navy);
+  --ink-60: var(--w-55);
+  --ink-38: var(--w-32);
+  --rule-dark: var(--rule);
+
+  /* Ten percent across the whole frame, thirty behind the card.
+     0.10 flat and 0.22 panel compose to 1-(0.90 x 0.78) = 0.298 — the panel
+     lands on 30% total rather than 40%, because the flat wash is already
+     under it.
+     The edge washes go to zero: they existed to seat white type against the
+     photograph, and navy type on a light ground does not need them. */
+  --wash-flat: 0.1;
+  --wash-edge-top: 0;
+  --wash-edge-bot: 0;
+  --wash-pool: 0.08;
+  --wash-panel: 0.22;
+  color: var(--navy);
+}
+
+/* Brass on white is too pale to read as a button, so the light hero's solid
+   CTA keeps the beige fill but takes navy text, and the ghost button gets a
+   navy hover instead of a white one. */
+.hero-light .btn {
+  border-color: var(--rule);
+}
+
+.hero-light .btn:hover {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--navy);
+}
+
+.hero-light .btn-solid {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--navy);
+}
+
+.hero-light .btn-solid:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+/*
+ * The card on the light hero.
+ *
+ * The ground behind it is light, but the card itself is tinted to ~30% and
+ * blurred, and against that the original white type is what reads — navy on a
+ * frosted mid-tone went muddy. So this hands the white ramp back for the
+ * card's contents only, and nothing else.
+ *
+ * It sets the ramp and NOT the --wash-* alphas, which is the whole point of
+ * keeping the two groups separate: the card holds the 22% tint .hero-light
+ * gave it rather than jumping to the dark grades' 25%. The one exception is
+ * --wash-flat, which inside the card means the category strip and wants the
+ * heavier value to separate from the card behind it.
+ */
+.on-glass {
+  --w-90: rgba(255, 255, 255, 0.9);
+  --w-55: rgba(255, 255, 255, 0.55);
+  --w-32: rgba(255, 255, 255, 0.32);
+  --rule: rgba(255, 255, 255, 0.13);
+  --ink: #ffffff;
+  --ink-60: var(--w-55);
+  --ink-38: var(--w-32);
+  --rule-dark: var(--rule);
+  --wash-flat: 0.2;
+  color: #fff;
+}
+
+/* The hero's original buttons, unchanged: brass fill, black label. Declared
+   after .hero-light's so the card wins over the section it sits in. */
+.on-glass .btn {
+  border-color: var(--rule);
+}
+
+.on-glass .btn:hover,
+.on-glass .btn-solid {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--black);
+}
+
+.on-glass .btn-solid:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--black);
+}
+
+/*
+ * No washes at all — the bright hero (/split-3).
+ *
+ * Every other hero darkens the photograph so type can sit on it. This one runs
+ * the frame at full brightness and flips the type to navy instead, so there is
+ * nothing for a wash to do: flat, edges and panel all go to zero. The pool
+ * survives at 4%, purely to feather the card's edge into the room so it does
+ * not look cut out.
+ *
+ * Applied alongside .hero-light, which supplies the navy ramp — and declared
+ * AFTER it. Both are single class selectors, so specificity is equal and
+ * source order decides; sitting above .hero-light meant every value here lost
+ * silently and the hero kept its 10% wash.
+ */
+.wash-none {
+  --wash-flat: 0;
+  --wash-edge-top: 0;
+  --wash-edge-bot: 0;
+  --wash-pool: 0.04;
+  --wash-panel: 0;
+}
+
+
+/*
+ * The hero keeps beige. Its buttons resolve to brass instead of navy, so the
+ * treatment that was there originally survives every later change to the
+ * body palette.
+ */
+.hero-scope .btn:hover {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--black);
+}
+
+.hero-scope .btn-solid {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--black);
+}
+
+.hero-scope .btn-solid:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--black);
+}
+
+/* ── TYPE ────────────────────────────────────────────────────────────── */
+
+/*
+ * Display. Uppercase only — the tracking below is far too tight for
+ * lowercase, where the round letters would touch.
+ */
+.dsp {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--track-display);
+  line-height: 0.86;
+}
+
+/* Looser cut, for longer sentences set large. */
+.dsp-sm {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+/*
+ * Sentence-case variants.
+ *
+ * .dsp-sm and .bd both force uppercase, and both set it in plain CSS, so a
+ * Tailwind `normal-case` utility loses to them. Where a heading or a paragraph
+ * is meant to read as prose rather than as a label — the Why Us rows — these
+ * carry the same weight, tracking and rhythm with the transform dropped.
+ */
+.dsp-sm-sentence {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+.bd-sentence {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.7;
+}
+
+/*
+ * Micro-type. Every label, caption, nav item, button and stat caption.
+ * 11px / 600 / uppercase is the whole trick.
+ */
+.mi {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--track-micro);
+  line-height: 1.45;
+}
+
+.mi-lg {
+  font-size: 12.5px;
+}
+
+/* Body copy stays in the same uppercase register, at a readable size with
+   generous leading. */
+.bd {
+  font-size: 12.5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--track-micro);
+  line-height: 1.75;
+}
+
+/* Dimming a phrase mid-sentence is how this system creates emphasis. There is
+   no bold — everything is already 500/600 — so tone has to carry it.
+   Reads off --ink-38, so it resolves to navy-at-38% on light grounds and
+   white-at-32% inside .on-dark. */
+.dim {
+  color: var(--ink-38);
+}
+
+/* ── GRAIN ───────────────────────────────────────────────────────────── */
+
+/*
+ * Fixed, not absolute: one grain plane across the viewport that the page
+ * scrolls underneath, so the texture never appears to travel with content.
+ */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  /* 0.42 washed the entire page toward grey — a white-noise plane at that
+     strength lifts every black in the design. Grain should be felt at arm's
+     length and invisible at reading distance. */
+  opacity: 0.13;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix values=%220 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.16 0%22/%3E%3C/filter%3E%3Crect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22/%3E%3C/svg%3E");
+}
+
+/* ── LAYERING ────────────────────────────────────────────────────────── */
+
+/*
+ * The four-column hairline grid that used to sit behind every section is gone
+ * — at full height across nine sections it read as scaffolding rather than
+ * structure. Alignment is now carried by the section padding and the rules
+ * that already exist under spec rows, list items and section headers, which
+ * are doing the same job without drawing a cage over the photography.
+ */
+.layer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── ARTBOARD ────────────────────────────────────────────────────────── */
+
+/*
+ * The selected-artboard motif: hairline box with a registration dot at each
+ * corner. Two of the dots hang off the box itself and two off a single child
+ * span, so four corners cost one extra element rather than four.
+ */
+.board {
+  position: relative;
+  border: 1px solid var(--rule);
+}
+
+.board::before,
+.board::after,
+.board > .board-c::before,
+.board > .board-c::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--w-55);
+}
+
+.board::before {
+  top: -3px;
+  left: -3px;
+}
+
+.board::after {
+  top: -3px;
+  right: -3px;
+}
+
+.board > .board-c::before {
+  bottom: -3px;
+  left: -3px;
+}
+
+.board > .board-c::after {
+  bottom: -3px;
+  right: -3px;
+}
+
+/* ── REVEALS ─────────────────────────────────────────────────────────── */
+
+/*
+ * Type arrives from behind a hard edge rather than fading. The wrapper clips
+ * and the child translates, so letters are genuinely occluded by the edge
+ * instead of being transparent over it.
+ */
+.mask {
+  overflow: hidden;
+  display: block;
+}
+
+.mask > * {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mask[data-shown="true"] > * {
+  transform: translateY(0);
+}
+
+/* Everything that is not display type uses one shared entrance. */
+.rise {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rise[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask > *,
+  .rise {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+}
+
+/* ── CONTROLS ────────────────────────────────────────────────────────── */
+
+/*
+ * Buttons read off --rule-dark and --ink, so the same markup is correct on a
+ * light ground and inside .on-dark without any variant class.
+ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--rule-dark);
+  color: var(--ink);
+  padding: 14px 22px;
+  transition:
+    background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+/* Inside a navy section the fill has to invert, or hover would paint navy on
+   navy and the button would vanish. */
+.on-dark .btn:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--navy);
+}
+
+.btn-solid {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.btn-solid:hover {
+  background: var(--navy-lift);
+  border-color: var(--navy-lift);
+  color: #fff;
+}
+
+.on-dark .btn-solid {
+  background: #fff;
+  border-color: #fff;
+  color: var(--navy);
+}
+
+.on-dark .btn-solid:hover {
+  background: var(--mist);
+  border-color: var(--mist);
+  color: var(--navy);
+}
+
+/* Live dot on the floating bar. Reads as "someone is actually there" rather
+   than as decoration — the ring expands and fades, the core stays put. */
+@keyframes cta-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.cta-ping {
+  animation: cta-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-ping {
+    animation: none;
+  }
+}
+
+/* Underline that draws in from the left. */
+.ln {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.ln::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ln:hover::after {
+  transform: scaleX(1);
+}
+
+/* Entrance for the review rotator: each quote arrives from below as it takes
+   over. Defined here rather than inline because the rotator re-keys the
+   element on every advance, and an inline keyframe would be re-parsed each
+   time. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Review wall rails. The track holds two identical copies of the list, so
+   travelling exactly -50% lands on a pixel-identical frame and the loop has no
+   seam. Opposite directions for the two rails. */
+@keyframes rail-left {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-100%, 0, 0); }
+}
+
+/* A two-copy rail loops seamlessly at -50% and only at -50%: the track is
+   twice the content, so half a track is exactly one full set. rail-left's
+   -100% empties the frame before it restarts. */
+@keyframes rail-half {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* The -50% pair, travelling the other way. rail-right runs -100%..0 and has
+   the same seam problem rail-left does. */
+/* Drop this on any section to invert it. The tier names do not change, so a
+   component written against --ink works on either ground without a `dark`
+   prop — which is the failure mode SpecList hit on the other pages. */
+/* The inverse of .on-navy: put this on anything that sits INSIDE a dark
+   section but is itself light, and the tiers come back to their default
+   values. Without it a white panel inside .on-navy inherits white ink. */
+.on-light {
+  --ink: #00263d;
+  --ink-2: #4e5f6b;
+  --ink-3: #7b8891;
+  --rule: #dcdcda;
+}
+
+.on-navy {
+  --ink: #ffffff;
+  --ink-2: #b9c6ce;
+  --ink-3: #8ea0ab;
+  --rule: rgba(255, 255, 255, 0.18);
+}
+
+@keyframes rail-half-rev {
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes rail-right {
+  from { transform: translate3d(-100%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+/*
+ * Section separation.
+ *
+ * The page runs long enough that two sections on the same ground end up
+ * adjacent — five white ones in a row at one point — and where that happens
+ * the boundary between them disappears. The symptom is cards and rules that
+ * look like they are floating in an open, unclosed space, because the only
+ * edges left on screen are the internal ones.
+ *
+ * A hairline on every section but the first fixes it everywhere at once,
+ * including for whatever order these sections end up in. It reads off
+ * --rule-dark, which .on-dark re-points to the white ramp, so navy sections
+ * get a light hairline and light sections get a navy one without a second
+ * rule being written.
+ *
+ * The hero is excluded — it is full-bleed photography and a line across the
+ * top of it would sit on nothing.
+ */
+main > section:not(:first-child),
+main > footer {
+  border-top: 1px solid var(--rule-dark);
+}
+
+/* The marquee draws its own top and bottom rules, and the pinned gallery's
+   border would scroll with its sticky child rather than sitting at the section
+   edge. Both opt out. */
+main > section[aria-label]:not(:first-child),
+main > section#gallery {
+  border-top: 0;
+}
+
+/* Review columns on the light build. Each track holds the list twice, so a
+   50% travel lands on an identical frame and the loop has no seam. The middle
+   column runs the other way; three columns drifting together would read as one
+   block sliding, not as a wall. */
+@keyframes col-up {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, -50%, 0); }
+}
+
+@keyframes col-down {
+  from { transform: translate3d(0, -50%, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+/*
+ * The Rankify scope — /split-3.
+ *
+ * Values measured off rankify.com.au/shopify-development-services rather than
+ * matched by eye:
+ *
+ *   family     Inter
+ *   h1         52px / 500 / lh 1.02 / -0.04em
+ *   h2         44px / 500 / lh 1.05 / -0.04em
+ *   body       13.5-15px / 400 / lh 1.5 / #999
+ *   button     15px / 500 / 14px 24px / fully rounded
+ *   ground     #f5f5f5
+ *
+ * Weight 500 throughout, and nothing heavier anywhere — that restraint is the
+ * whole character of the system, and it is what the 600-weight display face
+ * used everywhere else on this project does not have.
+ */
+.rk {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --rk-ground: #f5f5f5;
+  --rk-ink: #0a0a0a;
+  --rk-muted: #999999;
+  --rk-line: #e7e7e7;
+}
+
+.rk-h1 {
+  font-size: clamp(34px, 3.6vw, 52px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-transform: none;
+}
+
+.rk-h2 {
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  text-transform: none;
+}
+
+.rk-body {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.rk-small {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* Pill buttons, both variants, at their measured padding. */
+.rk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 9999px;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+  transition: background-color 300ms, color 300ms, border-color 300ms;
+}
+
+.rk-btn-solid {
+  background: var(--rk-ink);
+  color: #fff;
+  border: 1px solid var(--rk-ink);
+}
+
+.rk-btn-solid:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+}
+
+.rk-btn-ghost {
+  background: #fff;
+  color: var(--rk-ink);
+  border: 1px solid var(--rk-line);
+}
+
+.rk-btn-ghost:hover {
+  border-color: var(--rk-ink);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * /refresh — the Hanza scope.
+ *
+ * Every value below is measured off hanza-template.framer.website rather than
+ * matched by eye:
+ *
+ *   display   Zalando Sans 500, UPPERCASE, 80-96px, line-height 0.90,
+ *             tracking -0.03em, colour #121212 (or white on dark)
+ *   micro     Geist Mono 500, 12-16px, uppercase, slight positive tracking
+ *   accent    #FF6044
+ *   grounds   #FCFCFC and #121212
+ *
+ * The display/mono split is the character of the thing. A wide, tightly-
+ * tracked display face against a monospaced label face is what makes the
+ * template read as editorial rather than as a product page, and matching the
+ * sizes without matching that pairing would miss the point entirely.
+ * ───────────────────────────────────────────────────────────────────────── */
+.hz {
+  /*
+   * The measured geometry.
+   *
+   *   gutter    64px   (outer margin, both sides)
+   *   columns   4      (604px each at a 2560 viewport)
+   *   section   160px  (padding, top and bottom)
+   *   gap       64px   (heading to the content under it)
+   *
+   * These are the numbers the reference is actually built on, taken off the
+   * live page rather than estimated. Everything on /refresh is spaced in
+   * multiples of them.
+   */
+  --hz-gutter: 20px;
+  --hz-section: 80px;
+  --hz-gap: 40px;
+
+  --hz-ink: #121212;
+  --hz-paper: #fcfcfc;
+  --hz-accent: #ff6044;
+  --hz-line: rgba(18, 18, 18, 0.12);
+  --hz-muted: rgba(18, 18, 18, 0.55);
+
+  font-family: var(--font-zalando), ui-sans-serif, system-ui, sans-serif;
+  background: var(--hz-paper);
+  color: var(--hz-ink);
+}
+
+@media (min-width: 1024px) {
+  .hz {
+    --hz-gutter: 64px;
+    --hz-section: 160px;
+    --hz-gap: 64px;
+  }
+}
+
+/* Horizontal gutter and vertical section rhythm, as one class each, so no
+   section can quietly invent its own spacing. */
+.hz-pad {
+  padding-left: var(--hz-gutter);
+  padding-right: var(--hz-gutter);
+}
+
+.hz-sec {
+  padding-top: var(--hz-section);
+  padding-bottom: var(--hz-section);
+}
+
+/*
+ * The section header row.
+ *
+ * The label does NOT sit above the heading — measured, they share a baseline:
+ * the label sits in column 1 and the heading starts on the column-2 line. That
+ * left rail is what gives the reference its editorial feel, and stacking them
+ * (which is what this page did first) loses it completely.
+ */
+.hz-head {
+  display: grid;
+  gap: var(--hz-gap);
+}
+
+@media (min-width: 1024px) {
+  .hz-head {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .hz-head > :first-child {
+    grid-column: 1 / 2;
+  }
+
+  .hz-head > :last-child {
+    grid-column: 2 / -1;
+  }
+}
+
+/* Dark sections re-point the same three tokens, so nothing inside a section
+   needs to know which ground it is on. */
+.hz-dark {
+  --hz-ink: #fcfcfc;
+  --hz-paper: #121212;
+  --hz-line: rgba(252, 252, 252, 0.14);
+  --hz-muted: rgba(252, 252, 252, 0.55);
+
+  background: #121212;
+  color: #fcfcfc;
+}
+
+/* Display. 0.90 line-height is the single most distinctive number in the
+   system — it is what makes two stacked lines read as one block. */
+.hz-dsp {
+  font-family: var(--font-zalando), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.hz-dsp-xl {
+  font-size: clamp(44px, 7.4vw, 118px);
+}
+
+.hz-dsp-lg {
+  font-size: clamp(36px, 5.4vw, 82px);
+}
+
+.hz-dsp-md {
+  font-size: clamp(26px, 2.8vw, 44px);
+}
+
+/* Micro. Every label, number, caption and button on the page. */
+.hz-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hz-mono-sm {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 400;
+  font-size: 11.5px;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Body copy is uppercase here too — it is set as a block of micro-type rather
+   than as prose, which is why the template can run body text at 16px without
+   it reading as small. */
+.hz-body {
+  font-family: var(--font-zalando), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 1.32;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* Dimmed half of a two-tone heading. The template writes a sentence and lets
+   colour do the emphasis rather than weight — there is no bold anywhere. */
+.hz-dim {
+  color: var(--hz-muted);
+}
+
+/* The vertical hairline grid that runs behind every section. Drawn as a
+   repeating gradient rather than as elements, so it costs one paint and never
+   participates in layout. */
+.hz-grid {
+  position: relative;
+}
+
+.hz-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* Four columns, not six. Measured: at a 2560 viewport the reference draws
+     its hairlines at 64 / 668 / 1272 / 1876 / 2480 — a 64px outer margin and
+     four 604px columns. The grid is inset by the same gutter as the content,
+     so a line always lands exactly on the container edge. */
+  left: var(--hz-gutter);
+  right: var(--hz-gutter);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--hz-line) 0 1px,
+    transparent 1px calc(100% / 4)
+  );
+  border-right: 1px solid var(--hz-line);
+}
+
+.hz-grid > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* The coral square that prefixes every section label. */
+.hz-tick::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 12px;
+  vertical-align: 1px;
+  background: var(--hz-accent);
+}
+
+/* Button: a bar with a coral square on its end, which is the template's
+   signature control. */
+.hz-btn {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--hz-line);
+}
+
+.hz-btn > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 14px 22px;
+  background: var(--hz-ink);
+  color: var(--hz-paper);
+  transition: background-color 300ms;
+}
+
+.hz-btn > span:last-child {
+  display: flex;
+  width: 46px;
+  align-items: center;
+  justify-content: center;
+  background: var(--hz-accent);
+  color: #121212;
+  transition: background-color 300ms;
+}
+
+.hz-btn:hover > span:last-child {
+  background: #ff7a62;
+}
