@@ -689,6 +689,16 @@ body {
 /* A two-copy rail loops seamlessly at -50% and only at -50%: the track is
    twice the content, so half a track is exactly one full set. rail-left's
    -100% empties the frame before it restarts. */
+/* The mega menu's open animation.
+   A KEYFRAME, not a transition, because the panel is now mounted only while
+   it is open — and a transition cannot run on the frame an element appears,
+   whereas a keyframe animation does. Transform only: opacity below 1 would
+   make the panel a backdrop root and flatten its own blur. */
+@keyframes mega-in {
+  from { transform: translate3d(0, -8px, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
 @keyframes rail-half {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }

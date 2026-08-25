@@ -219,14 +219,21 @@ export function FrostHeader() {
       </div>
 
       {/* Mega menu — a sibling of the frost, so its own blur still works. */}
-      <div
-        className={`absolute inset-x-0 top-full hidden transition-[transform,visibility] ease-[cubic-bezier(0.16,1,0.3,1)] lg:block ${
-          mega
-            ? "visible translate-y-0 duration-300"
-            : "pointer-events-none invisible -translate-y-2 duration-0"
-        }`}
-        aria-hidden={!mega}
-      >
+      {/*
+          MOUNTED ONLY WHILE OPEN. This is not a tidiness choice.
+
+          Hiding the panel was never enough. Each category mark is a span with
+          a mask-image, and mask-image promotes an element to its own
+          compositor layer — a promoted layer can outlive `visibility: hidden`
+          by a frame or two, which is exactly why the ICONS were left hanging
+          after the menu shut while the text beside them vanished cleanly.
+          There is nothing to leave behind if the subtree does not exist.
+
+          The open animation is a keyframe rather than a transition, because a
+          transition cannot run on the frame an element first appears.
+      */}
+      {mega && (
+        <div className="absolute inset-x-0 top-full hidden animate-[mega-in_300ms_cubic-bezier(0.16,1,0.3,1)] lg:block">
         {/*
             The cell grid, unchanged from the version that worked. gap-px over
             a hairline ground draws every divider as a single line that cannot
@@ -323,7 +330,8 @@ export function FrostHeader() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      )}
     </header>
   );
 }
