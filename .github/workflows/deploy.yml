@@ -25,7 +25,18 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: npm ci
+      # npm install, not npm ci.
+      #
+      # The lockfile is generated on Windows and cannot record the Linux-only
+      # optional dependencies that sharp pulls in (@emnapi/core, @emnapi/
+      # runtime). npm ci treats those as a mismatch and refuses to install at
+      # all, so the build died before reaching the export. Regenerating the
+      # lockfile locally does not fix it — npm cannot resolve another
+      # platform's optional deps from Windows.
+      #
+      # npm install resolves per-platform at build time. The trade is losing
+      # exact-version reproducibility from the lockfile.
+      - run: npm install --no-audit --no-fund
 
       - name: Build static export
         # NEXT_PUBLIC_BASE_PATH must be set HERE, not just in next.config.
