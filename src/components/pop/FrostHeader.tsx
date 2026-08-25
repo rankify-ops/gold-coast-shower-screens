@@ -33,7 +33,22 @@ import { Arrow } from "@/components/ui/Arrow";
  *     padding; an immediate close on the nav shuts the menu before the pointer
  *     ever arrives.
  *
- *  3. THE REVEAL IS TRANSFORM + VISIBILITY, never opacity. Opacity below 1
+ *  3. THE CLOSE IS INSTANT, and that is the fix for a real bug.
+ *
+ *     `visibility` is a DISCRETE animatable property: transitioning away from
+ *     `visible` flips it at 100%, not at 0. So a 150ms close left the panel
+ *     fully painted for the whole 150ms — sliding up eight pixels and then
+ *     blinking out. That is the "icons left behind" ghost. duration-0 on the
+ *     closed branch flips it on the spot. Opening still animates; only the
+ *     exit is immediate, which is what a menu should do anyway.
+ *
+ *     The frost is also torn down on close rather than left declared. An
+ *     element carrying backdrop-filter gets its own compositor layer, and
+ *     hiding one via visibility can leave a stale frame behind for a beat.
+ *     Dropping the blur classes when the panel is shut removes the layer
+ *     outright instead of hiding something that is still composited.
+ *
+ *  4. THE REVEAL IS TRANSFORM + VISIBILITY, never opacity. Opacity below 1
  *     also forms a backdrop root, so fading the panel in kills its blur for
  *     every frame of the fade and snaps it on at the end. Which is why the
  *     close is fast rather than faded: with opacity ruled out, the only way
@@ -244,7 +259,7 @@ export function FrostHeader() {
         className={`absolute inset-x-0 top-full hidden transition-[transform,visibility] ease-[cubic-bezier(0.16,1,0.3,1)] lg:block ${
           mega
             ? "visible translate-y-0 duration-300"
-            : "pointer-events-none invisible -translate-y-2 duration-150"
+            : "pointer-events-none invisible -translate-y-2 duration-0"
         }`}
         aria-hidden={!mega}
       >
@@ -268,7 +283,11 @@ export function FrostHeader() {
           {/* border-x and border-b, never border-t. The panel sits flush
               against the bar, so a top edge here would sit directly on the
               header's own bottom hairline and draw it twice as thick. */}
-          <div className="border-x border-b border-[color:var(--rule)] bg-white/55 backdrop-blur-2xl backdrop-saturate-150">
+          <div
+            className={`border-x border-b border-[color:var(--rule)] ${
+              mega ? "bg-white/55 backdrop-blur-2xl backdrop-saturate-150" : ""
+            }`}
+          >
             {/* Open/close intent lives on the GRID, not the wrapper. The
                 wrapper is full-bleed, so hovering the empty space to either
                 side of the columns counted as being in the menu and held it
