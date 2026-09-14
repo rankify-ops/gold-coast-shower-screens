@@ -1112,3 +1112,28 @@ main > section#gallery {
 .hz-btn:hover > span:last-child {
   background: #ff7a62;
 }
+
+/* ── CLIENT PREVIEW WINDOW ─────────────────────────────────────────────
+   See src/content/preview.ts. One unprefixed backdrop-filter only — Lightning
+   CSS drops the standard property if -webkit- is also hand-written. */
+.preview-pill {
+  background: rgba(0, 26, 43, 0.78);
+  backdrop-filter: blur(18px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 12px 34px rgba(0, 26, 43, 0.32);
+}
+
+/* Ended: everything except the gate is blurred, frozen and unscrollable. The
+   class goes on <html> from an inline head script, before first paint. */
+html.preview-expired,
+html.preview-expired body {
+  overflow: hidden !important;
+}
+html.preview-expired body > :not(.preview-gate) {
+  filter: blur(14px) saturate(0.85);
+  pointer-events: none;
+  user-select: none;
+}
+html.preview-expired body.grain::after {
+  display: none;
+}

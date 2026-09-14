@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif, Inter, Zalando_Sans } from "next/font/google";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { EstimatorProvider } from "@/components/estimator/EstimatorProvider";
+import { PreviewGate } from "@/components/layout/PreviewGate";
+import { PREVIEW_ENABLED, PREVIEW_ENDS } from "@/content/preview";
 import "./globals.css";
 
 // One typeface doing every job — display, body and micro-type are all Geist at
@@ -72,9 +74,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-AU" className={`${geist.variable} ${inter.variable} ${zalando.variable} ${geistMono.variable} ${serif.variable}`}>
+    <html
+      lang="en-AU"
+      className={`${geist.variable} ${inter.variable} ${zalando.variable} ${geistMono.variable} ${serif.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {PREVIEW_ENABLED && (
+          <script
+            // Runs before first paint so an ended preview is blurred from the
+            // very first frame, not after React loads. Static, author-controlled.
+            dangerouslySetInnerHTML={{
+              __html: `try{if(Date.now()>=${Date.parse(PREVIEW_ENDS)}||new URLSearchParams(location.search).get("preview")==="expired")document.documentElement.classList.add("preview-expired")}catch(e){}`,
+            }}
+          />
+        )}
+      </head>
       {/* .grain paints one fixed noise plane over the whole viewport. */}
       <body className="grain">
+        <PreviewGate />
         <SmoothScroll />
         {/* Wraps the page so every "#configurator" CTA opens the estimator
             modal instead of jumping. */}
