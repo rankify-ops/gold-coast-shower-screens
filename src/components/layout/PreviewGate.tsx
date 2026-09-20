@@ -34,8 +34,10 @@ export function PreviewGate() {
   const forced = useSyncExternalStore(noSubscribe, readForced, () => false);
   const expired = now !== null && (forced || now >= END);
 
+  // Tied to PREVIEW_ENABLED as well: with the gate off, the blur class must
+  // never be applied — otherwise the page blurs with nothing on top of it.
   useEffect(() => {
-    document.documentElement.classList.toggle("preview-expired", expired);
+    document.documentElement.classList.toggle("preview-expired", PREVIEW_ENABLED && expired);
   }, [expired]);
 
   if (!PREVIEW_ENABLED || now === null) return null;
