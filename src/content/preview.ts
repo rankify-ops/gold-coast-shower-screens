@@ -9,7 +9,9 @@
  *   Remove:  set PREVIEW_ENABLED to false.
  *   Test:    add ?preview=expired to any URL.
  */
-export const PREVIEW_ENABLED = true;
+// Unlocked 20 Sep 2026 so Tom can work on the live preview. Set back to true
+// (and push a future PREVIEW_ENDS) to put the lock back.
+export const PREVIEW_ENABLED = false;
 
 // Already passed: the preview is ended as of 14 September 2026.
 export const PREVIEW_ENDS = "2026-09-14T00:00:00Z";
