@@ -265,7 +265,7 @@ export default function Home() {
         <p className="hidden text-[11px] font-medium uppercase tracking-[0.14em] text-[color:var(--navy)]/45 sm:block">
           {SITE.licence}
           <span className="mx-3">—</span>
-          Measure to install / 14 working days
+          Measure to install / 10 working days
         </p>
       </div>
 
