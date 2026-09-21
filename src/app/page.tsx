@@ -170,7 +170,7 @@ export default function Home() {
                 aria-hidden
                 className="h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-current"
               />
-              {SITE.phone}
+              {SITE.phone} (Mon-Sat)
             </a>
           </div>
 
