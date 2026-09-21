@@ -146,7 +146,7 @@ export default function Home() {
             className="mt-5 max-w-[52ch] text-[clamp(17px,1.2vw,21px)] font-medium leading-[1.35] tracking-[-0.02em] text-[color:var(--navy)]/85"
             style={{ fontFamily: "var(--font-geist), ui-sans-serif, system-ui, sans-serif" }}
           >
-            {HERO.headline} {HERO.headlineDim}
+            Custom Made to Measure Glass, Gold Coast Wide
           </p>
 
           {/*
