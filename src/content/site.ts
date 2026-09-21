@@ -84,8 +84,8 @@ export const HERO = {
    * the page so all hero copy stays in one place.
    */
   display: ["Best shower screens", "in Queensland."],
-  headline: "Custom Made to Measure",
-  headlineDim: "Glass Solutions",
+  headline: "Custom Made to Measure Glass,",
+  headlineDim: "Gold Coast Wide",
   body: "We combine local craftsmanship with exceptional service to deliver frameless and semi frameless shower screens that look stunning and stand the test of time — giving you a bathroom upgrade without the hassle.",
   cta: "Get an Instant Estimate",
   // Paths point at the client's own untouched SVGs, scraped from their site.
