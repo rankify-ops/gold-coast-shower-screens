@@ -131,14 +131,6 @@ export default function Home() {
             {HERO.display[1]}
           </h1>
 
-          <Image
-            src={asset("/img/uploads/rankify-8-1-1.webp")}
-            alt="Close-up of a red high-gloss wardrobe door panel"
-            width={350}
-            height={350}
-            className="mt-5 h-24 w-24"
-          />
-
           {/* Their own line, as a subhead under the headline. Deliberately
               restrained — pushed to 26px at full navy it started competing
               with the h1 rather than supporting it. */}
