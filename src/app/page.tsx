@@ -127,8 +127,6 @@ export default function Home() {
             style={{ fontFamily: "var(--font-geist), ui-sans-serif, system-ui, sans-serif" }}
           >
             {HERO.display[0]}
-            <br />
-            {HERO.display[1]}
           </h1>
 
           {/* Their own line, as a subhead under the headline. Deliberately
