@@ -48,8 +48,8 @@ export function IntroSection() {
         */}
         <div className="relative min-h-[320px] overflow-hidden border-b border-[color:var(--navy)]/12 lg:min-h-0 lg:border-b-0">
           <Image
-            src={asset("/img/hero-natural.webp")}
-            alt="A frameless shower screen and fluted vanity in a finished bathroom"
+            src={asset("/img/uploads/rankify-16-1-1.webp")}
+            alt="Rear view of a dark grey Mercedes-AMG GT parked on a suburban street at dusk"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
