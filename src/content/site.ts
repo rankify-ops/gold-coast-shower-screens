@@ -71,10 +71,8 @@ export const MEGA_PRODUCTS = [
 /**
  * Hero — their own headline, subline and call to action, verbatim.
  *
- * Their H1 covers all four product lines on purpose. An earlier draft of this
- * page said "Frameless Glass", which quietly narrowed the business to shower
- * screens and dropped splashbacks, mirrors and wardrobe doors off the front
- * page entirely.
+ * The H1 names shower screens and the Gold Coast specifically, at the
+ * client's request.
  */
 export const HERO = {
   /**
@@ -83,7 +81,7 @@ export const HERO = {
    * and now runs as the subhead beneath it. Kept in this file rather than in
    * the page so all hero copy stays in one place.
    */
-  display: ["Best shower screens", "on the coast."],
+  display: ["Shower Screens", "Gold Coast"],
   headline: "Custom Made to Measure",
   headlineDim: "Glass Solutions",
   body: "We combine local craftsmanship with exceptional service to deliver frameless and semi frameless shower screens that look stunning and stand the test of time — giving you a bathroom upgrade without the hassle.",
